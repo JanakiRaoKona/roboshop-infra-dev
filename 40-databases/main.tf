@@ -9,8 +9,8 @@ resource "aws_instance" "mongodb" {
   )
 
 }
-
-resource "terraform_data" "bootstrap" {
+### mongodb ### 
+resource "terraform_data" "mongodb" {
   # Re-run whenever the instance changes
   triggers_replace = [
     aws_instance.mongodb.id
@@ -47,7 +47,7 @@ resource "aws_instance" "redis" {
 
 }
 
-resource "terraform_data" "bootstrap" {
+resource "terraform_data" "redis" {
   # Re-run whenever the instance changes
   triggers_replace = [
     aws_instance.redis.id
