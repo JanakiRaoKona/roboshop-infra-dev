@@ -17,4 +17,6 @@ locals {
   bastion_sg_id = data.aws_ssm_parameter.bastion_sg_id.value
   vpn_sg_id     = data.aws_ssm_parameter.vpn_sg_id.value
 
+  my_ipv4 = "${chomp(data.http.my_ipv4.response_body)}/32"
+
 }

@@ -244,7 +244,7 @@ resource "aws_vpc_security_group_ingress_rule" "shipping_bastion" {
 ### Payment ###  
 
 # payment is accepting connection from backend_alb on port number 8080
-resource "aws_vpc_security_group_ingress_rule" "payment_bastion" {
+resource "aws_vpc_security_group_ingress_rule" "payment_backend_alb" {
   security_group_id = local.payment_sg_id # destination where your creating the rule 
 
   referenced_security_group_id = local.backend_alb_sg_id # source where is traffic coming from  
@@ -339,3 +339,16 @@ resource "aws_vpc_security_group_ingress_rule" "frontend_alb_public_https" {
   ip_protocol = "tcp"
   to_port     = 443
 }
+
+#bastion 
+
+# bastion is accepting connection from Myip on port number 22
+resource "aws_vpc_security_group_ingress_rule" "bastion_myip" {
+  security_group_id = local.bastion_sg_id # destination where your creating the rule 
+
+  cidr_ipv4   = local.my_ipv4 # source where is traffic coming from  
+  from_port   = 22
+  ip_protocol = "tcp"
+  to_port     = 22
+}
+
