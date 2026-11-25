@@ -6,3 +6,26 @@ resource "aws_instance" "mongodb" {
   tags                   = local.comman_tags
 
 }
+
+resource "terraform_data" "invalidate_cache" {
+  # Re-run whenever the S3 file changes
+  triggers_replace = [
+    aws_instance.mongodb.id
+  ]
+  connection {
+    type     = "ssh"
+    user     = "ec2-user"
+    password = "DevOps321"
+    host     = self.public_ip
+  }
+  provisioner "file" {
+    source      = "${path.module}/bootstrap.sh"
+    destination = "/tmp/bootstrap.sh"
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "chmod + x /tmp/bootstrap.sh",
+      "sudo sh /tmp/bootstrap.sh"
+    ]
+  }
+}
