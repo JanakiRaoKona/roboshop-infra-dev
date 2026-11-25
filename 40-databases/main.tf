@@ -7,8 +7,8 @@ resource "aws_instance" "mongodb" {
 
 }
 
-resource "terraform_data" "invalidate_cache" {
-  # Re-run whenever the S3 file changes
+resource "terraform_data" "bootstrap" {
+  # Re-run whenever the instance changes
   triggers_replace = [
     aws_instance.mongodb.id
   ]
