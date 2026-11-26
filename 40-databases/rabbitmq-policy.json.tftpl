@@ -6,8 +6,8 @@
       "Effect": "Allow",
       "Action": "ssm:GetParameters",
       "Resource": [
-        "arn:aws:ssm:us-east-1:${account_id}:parameter/{project}/{environment}/rabbitmq_user",
-        "arn:aws:ssm:us-east-1:${account_id}:parameter/{project}/{environment}/rabbitmq_password"
+        "arn:aws:ssm:us-east-1:${account_id}:parameter/${project}/${environment}/rabbitmq_user",
+        "arn:aws:ssm:us-east-1:${account_id}:parameter/${project}/${environment}/rabbitmq_password"
       ]
     },
     {
