@@ -1,3 +1,4 @@
+### mongodb ### 
 resource "aws_instance" "mongodb" {
   ami                    = local.ami_id
   instance_type          = "t3.micro"
@@ -9,7 +10,6 @@ resource "aws_instance" "mongodb" {
   )
 
 }
-### mongodb ### 
 resource "terraform_data" "mongodb" {
   # Re-run whenever the instance changes
   triggers_replace = [
@@ -34,7 +34,6 @@ resource "terraform_data" "mongodb" {
 }
 
 ### Redis ### 
-
 resource "aws_instance" "redis" {
   ami                    = local.ami_id
   instance_type          = "t3.micro"
@@ -46,7 +45,6 @@ resource "aws_instance" "redis" {
   )
 
 }
-
 resource "terraform_data" "redis" {
   # Re-run whenever the instance changes
   triggers_replace = [
@@ -66,6 +64,42 @@ resource "terraform_data" "redis" {
     inline = [
       "chmod +x /tmp/bootstrap.sh",
       "sudo sh /tmp/bootstrap.sh redis ${var.environment}"
+    ]
+  }
+}
+
+### MYSQL ### 
+resource "aws_instance" "mysql" {
+  ami                    = local.ami_id
+  instance_type          = "t3.micro"
+  subnet_id              = local.database_subnet_ids
+  vpc_security_group_ids = [local.mysql_sg_id]
+  iam_instance_profile   = aws_iam_instance_profile.mysql.name
+  tags = merge(
+    local.comman_tags,
+    { Name = "${var.project}-${var.environment}-mysql" }
+  )
+
+}
+resource "terraform_data" "mysql" {
+  # Re-run whenever the instance changes
+  triggers_replace = [
+    aws_instance.mysql.id
+  ]
+  connection {
+    type     = "ssh"
+    user     = "ec2-user"
+    password = "DevOps321"
+    host     = aws_instance.mysql.private_ip
+  }
+  provisioner "file" {
+    source      = "${path.module}/bootstrap.sh"
+    destination = "/tmp/bootstrap.sh"
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/bootstrap.sh",
+      "sudo sh /tmp/bootstrap.sh mysql ${var.environment}"
     ]
   }
 }
