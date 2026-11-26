@@ -30,5 +30,5 @@ data "aws_caller_identity" "current" {}
 
 data "aws_ssm_parameter" "mysql_root_password" {
   name            = "/${var.project}/${var.environment}/mysql_root_password"
-  with_decryption = false
+  with_decryption = true
 }
