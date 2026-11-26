@@ -6,7 +6,6 @@ locals {
   account_id          = data.aws_caller_identity.current.account_id
   mysql_sg_id         = data.aws_ssm_parameter.mysql_sg_id.value
   rabbitmq_sg_id      = data.aws_ssm_parameter.rabbitmq_sg_id.value
-
   comman_tags = {
     Project     = var.project
     Environment = var.environment
