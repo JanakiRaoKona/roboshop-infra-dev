@@ -301,11 +301,11 @@ resource "aws_vpc_security_group_ingress_rule" "backend_alb_vpn" {
 # frontend is accepting connection from frontend_alb on port number 80
 resource "aws_vpc_security_group_ingress_rule" "frontend_frontend_alb_http" {
   security_group_id = local.frontend_sg_id # destination where your creating the rule 
+  cidr_ipv4         = "0.0.0.0/0"          # source, where is traffic coming from
 
-  referenced_security_group_id = local.frontend_alb_sg_id # source where is traffic coming from  
-  from_port                    = 80
-  ip_protocol                  = "tcp"
-  to_port                      = 80
+  from_port   = 80
+  ip_protocol = "tcp"
+  to_port     = 80
 }
 
 # frontend is accepting connection from bastion on port number 22
@@ -323,7 +323,6 @@ resource "aws_vpc_security_group_ingress_rule" "frontend_vpn_http" {
   security_group_id = local.frontend_sg_id # destination where your creating the rule 
 
   referenced_security_group_id = local.vpn_sg_id # source where is traffic coming from  
-  cidr_ipv4                    = "0.0.0.0/0"     # source, where is traffic coming from
   from_port                    = 22
   ip_protocol                  = "tcp"
   to_port                      = 22
