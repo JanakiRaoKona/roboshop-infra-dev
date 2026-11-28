@@ -323,6 +323,7 @@ resource "aws_vpc_security_group_ingress_rule" "frontend_vpn_http" {
   security_group_id = local.frontend_sg_id # destination where your creating the rule 
 
   referenced_security_group_id = local.vpn_sg_id # source where is traffic coming from  
+  cidr_ipv4                    = "0.0.0.0/0"     # source, where is traffic coming from
   from_port                    = 22
   ip_protocol                  = "tcp"
   to_port                      = 22
